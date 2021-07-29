@@ -25,10 +25,6 @@ h2 {
     font-size: 1rem;
 }
 
-code {
-    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
 
 .table-container {
     width: fit-content;
@@ -68,4 +64,10 @@ button {
     cursor: pointer;
     font-size: .75rem;
     letter-spacing: 1px;
+}
+
+@media only screen and (max-width:768px) {
+    table td label {
+        padding: 0;
+    }
 }
