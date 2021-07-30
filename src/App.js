@@ -5,7 +5,7 @@ import axios from 'axios'
 const DiscTable = () => {
 
   const [options, setOptions] = useState([
-    {values: ['Objetivo', 'Entusiasta', 'Diplomata','Perfeccionista'], checked: null},
+    {values: ['Objetivo', 'Entusiasta', 'Diplomata', 'Perfeccionista'], checked: null},
     {values: ['Direto', 'Social', 'Paciente', 'Precioso'], checked: null},
     {values: ['Ousado', 'Persuasivo', 'Leal', 'Descobridor de fatos'], checked: null},
     {values: ['Dominador', 'Impulsivo', 'Previsível', 'Pesquisador'], checked: null},
@@ -24,6 +24,7 @@ const DiscTable = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log('k')
     const res = await axios.post('http://127.0.0.1:8000/api/curriculum/disctest', JSON.stringify(options));
     console.log(res);
   }
@@ -33,8 +34,9 @@ const DiscTable = () => {
     const idx = e.target.attributes.idx.value;
     const newRow = options[row];
     newRow.checked = idx;
-    const newOptions = options.filter((o,index) => index === idx ? newRow : o);
+    const newOptions = options.filter((option, index) => index === idx ? newRow : option);
     setOptions(newOptions);
+    console.log('k')
   }
 
   return (
