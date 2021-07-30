@@ -4,9 +4,10 @@ import axios from 'axios'
 
 const DiscForm = () => {
 
-  const [personFirstName, setPersonFirstName] = useState('Jamil')
-  const [personLastName, setPersonLastName] = useState('aaaa')
-
+  const [personFirstName, setPersonFirstName] = useState('')
+  const [personLastName, setPersonLastName] = useState('')
+  const [buttonText, setButtonText] = useState('ENVIAR')
+  const [buttonDisabled, setButtonDisabled] = useState(false)
 
   const [options, setOptions] = useState([
     {values: ['Objetivo', 'Entusiasta', 'Diplomata', 'Perfeccionista'], checked: null},
@@ -26,16 +27,41 @@ const DiscForm = () => {
     {values: ['Controlador', 'Convincente', 'Versátil', 'Centrado'], checked: null},
   ])
 
+  const getCookie =(name) => {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+  }
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('k')
     const payload = {
       personFirstName: personFirstName,
       personLastName: personLastName,
       options: options,
     }
-    console.log(JSON.stringify(payload))
-    const res = await axios.post('http://127.0.0.1:8000/api/curriculum/disctest', JSON.stringify(payload));
+
+    const headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken'),
+    };
+    const res = await axios.post('https://jvtoolbox.herokuapp.com/api/curriculum/disctest', JSON.stringify(payload), {
+      headers: headers
+    });
+    if (res.status === 200) {
+      setButtonText('ENVIADO');
+      setButtonDisabled(true);
+    }
   }
 
    const handleInputChange = (e) => {
@@ -83,9 +109,9 @@ const DiscForm = () => {
               <th>Grupo 4</th>
             </tr>
             {options.map((row,rowIdx) => (
-                <tr>
+                <tr key={`row${rowIdx}`}>
                   {row.values.map((el, idx) => (
-                    <td>
+                    <td key={el}>
                       <label>
                         <input 
                           onChange={handleInputChange} 
@@ -105,7 +131,8 @@ const DiscForm = () => {
           </tbody>
       </table>
       <div className='button-container'>
-        <button type='submit'>ENVIAR</button>
+        <button type='submit' disabled={buttonDisabled}
+        style={buttonDisabled ? {opacity: '.5',cursor: 'not-allowed'} : null}>{buttonText}</button>
       </div>
     </form>
     </div>
