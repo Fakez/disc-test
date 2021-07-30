@@ -1,32 +1,41 @@
 import './App.css';
+import {useState} from 'react'
 import axios from 'axios'
 
 const DiscTable = () => {
 
+  const [options, setOptions] = useState([
+    {values: ['Objetivo', 'Entusiasta', 'Diplomata','Perfeccionista'], checked: null},
+    {values: ['Direto', 'Social', 'Paciente', 'Precioso'], checked: null},
+    {values: ['Ousado', 'Persuasivo', 'Leal', 'Descobridor de fatos'], checked: null},
+    {values: ['Dominador', 'Impulsivo', 'Previsível', 'Pesquisador'], checked: null},
+    {values: ['Exigente', 'Emocional', 'Pessoa de equipe', 'Sistemático'], checked: null},
+    {values: ['Enérgico', 'Oferecido', 'Calmo', 'Convencional'], checked: null},
+    {values: ['Disposto a correr riscos', 'Comunicador', 'Ponderado', 'Cordial'], checked: null},
+    {values: ['Aventureiro', 'Influente', 'Recatado', 'Cuidadoso'], checked: null},
+    {values: ['Decisivo', 'Agradável', 'Observador', 'Contido'], checked: null},
+    {values: ['Curioso', 'Sociável', 'Tranquilo', 'Altos padrões'], checked: null},
+    {values: ['Autoconfiante', 'Generoso', 'Pacífico', 'Analítico'], checked: null},
+    {values: ['Competitivo', 'Equilibrado', 'Prudente', 'Sensível'], checked: null},
+    {values: ['Rápido', 'Encantador', 'Amigável', 'Maduro'], checked: null},
+    {values: ['Seguro de si', 'Confiante', 'Estável', 'Evasivo'], checked: null},
+    {values: ['Controlador', 'Convincente', 'Versátil', 'Centrado'], checked: null},
+  ])
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const form = document.forms[0];
-    const formData = new FormData(form);
-    //const res = await axios.post('http://127.0.0.1:8000/api/curriculum/disctest', formData)
-    //console.log(res)
-    Array.from(form.querySelectorAll('tr')).map((row, rowIndex) => (
-      Array.from(row.querySelectorAll('input')).map(i => console.log(i.checked === true))
-    ))
+    const res = await axios.post('http://127.0.0.1:8000/api/curriculum/disctest', JSON.stringify(options));
+    console.log(res);
   }
 
    const handleChange = (e) => {
-    const input = e.target;
-    const td = input.parentElement.parentElement;
-    const row = td.parentElement
-    console.log([...row.children].indexOf(td))
+    const row = e.target.attributes.row.value;
+    const idx = e.target.attributes.idx.value;
+    const newRow = options[row];
+    newRow.checked = idx;
+    const newOptions = options.filter((o,index) => index === idx ? newRow : o);
+    setOptions(newOptions);
   }
-
-  const options = [
-    {
-      'Objetivo': false,
-    }
-  ]
-
 
   return (
     <div className='table-container'>
@@ -40,96 +49,14 @@ const DiscTable = () => {
               <th>Grupo 3</th>
               <th>Grupo 4</th>
             </tr>
-            <tr>
-                <td><label><input type="radio" name="testL1" value="Objetivo" required={true} />Objetivo</label></td>
-                <td><label><input type="radio" name="testL1" value="Entusiasta" />Entusiasta</label></td>
-                <td><label><input type="radio" name="testL1" value="Diplomata" />Diplomata</label></td>
-                <td><label><input type="radio" name="testL1" value="Perfeccionista" />Perfeccionista</label></td>
-            </tr>
-            <tr>
-                <td><label><input type="radio" name="testL2" value="Direto" required={true} />Direto</label></td>
-                <td><label><input type="radio" name="testL2" value="Social" />Social</label></td>
-                <td><label><input type="radio" name="testL2" value="Paciente" />Paciente</label></td>
-                <td><label><input type="radio" name="testL2" value="Precioso" />Precioso</label></td>
-            </tr>
-            <tr>
-                <td><label><input type="radio" name="testL3" value="Ousado" required={true} />Ousado</label></td>
-                <td><label><input type="radio" name="testL3" value="Persuasivo" />Persuasivo</label></td>
-                <td><label><input type="radio" name="testL3" value="Leal" />Leal</label></td>
-                <td><label><input type="radio" name="testL3" value="Descobridor de fatos" />Descobridor de fatos</label></td>
-            </tr>
-            <tr>
-                <td><label><input type="radio" name="testL4" value="Dominador" required={true} />Dominador</label></td>
-                <td><label><input type="radio" name="testL4" value="Impulsivo" />Impulsivo</label></td>
-                <td><label><input type="radio" name="testL4" value="Previsível" />Previsível</label></td>
-                <td><label><input type="radio" name="testL4" value="Pesquisador" />Pesquisador</label></td>
-            </tr>
-            <tr>
-                <td><label><input type="radio" name="testL5" value="Exigente" required={true} />Exigente</label></td>
-                <td><label><input type="radio" name="testL5" value="Emocional" />Emocional</label></td>
-                <td><label><input type="radio" name="testL5" value="Pessoa de equipe" />Pessoa de equipe</label></td>
-                <td><label><input type="radio" name="testL5" value="Sistemático" />Sistemático</label></td>
-            </tr>
-            <tr>
-                <td><label><input type="radio" name="testL6" value="Enérgico" required={true} />Enérgico</label></td>
-                <td><label><input type="radio" name="testL6" value="Oferecido" />Oferecido</label></td>
-                <td><label><input type="radio" name="testL6" value="Calmo" />Calmo</label></td>
-                <td><label><input type="radio" name="testL6" value="Convencional" />Convencional</label></td>
-            </tr>
-            <tr>
-                <td><label><input type="radio" name="testL7" value="Disposto a correr riscos" required={true} />Disposto a correr riscos</label></td>
-                <td><label><input type="radio" name="testL7" value="Comunicador" />Comunicador</label></td>
-                <td><label><input type="radio" name="testL7" value="Ponderado" />Ponderado</label></td>
-                <td><label><input type="radio" name="testL7" value="Cordial" />Cordial</label></td>
-            </tr>
-            <tr>
-                <td><label><input type="radio" name="testL8" value="Aventureiro" required={true} />Aventureiro</label></td>
-                <td><label><input type="radio" name="testL8" value="Influente" />Influente</label></td>
-                <td><label><input type="radio" name="testL8" value="Recatado" />Recatado</label></td>
-                <td><label><input type="radio" name="testL8" value="Cuidadoso" />Cuidadoso</label></td>
-            </tr>
-            <tr>
-                <td><label><input type="radio" name="testL9" value="Decisivo" required={true} />Decisivo</label></td>
-                <td><label><input type="radio" name="testL9" value="Agradável" />Agradável</label></td>
-                <td><label><input type="radio" name="testL9" value="Observador" />Observador</label></td>
-                <td><label><input type="radio" name="testL9" value="Contido" />Contido</label></td>
-            </tr>
-            <tr>
-                <td><label><input type="radio" name="testL10" value="Curioso" required={true} />Curioso</label></td>
-                <td><label><input type="radio" name="testL10" value="Sociável" />Sociável</label></td>
-                <td><label><input type="radio" name="testL10" value="Tranquilo" />Tranquilo</label></td>
-                <td><label><input type="radio" name="testL10" value=" />Altos padrões" />Altos padrões</label></td>
-            </tr>
-            <tr>
-                <td><label><input type="radio" name="testL11" value="Autoconfiante" required={true} />Autoconfiante</label></td>
-                <td><label><input type="radio" name="testL11" value="Generoso" />Generoso</label></td>
-                <td><label><input type="radio" name="testL11" value="Pacífico" />Pacífico</label></td>
-                <td><label><input type="radio" name="testL11" value=" />Analítico" />Analítico</label></td>
-            </tr>
-            <tr>
-                <td><label><input type="radio" name="testL12" value="Competitivo" required={true} />Competitivo</label></td>
-                <td><label><input type="radio" name="testL12" value="Equilibrado" />Equilibrado</label></td>
-                <td><label><input type="radio" name="testL12" value="Prudente" />Prudente</label></td>
-                <td><label><input type="radio" name="testL12" value=" />Sensível" />Sensível</label></td>
-            </tr>
-            <tr>
-                <td><label><input type="radio" name="testL13" value="Rápido" required={true} />Rápido</label></td>
-                <td><label><input type="radio" name="testL13" value="Encantador" />Encantador</label></td>
-                <td><label><input type="radio" name="testL13" value="Amigável" />Amigável</label></td>
-                <td><label><input type="radio" name="testL13" value=" />Maduro" />Maduro</label></td>
-            </tr>
-            <tr>
-                <td><label><input type="radio" name="testL14" value="Seguro de si" required={true} />Seguro de si</label></td>
-                <td><label><input type="radio" name="testL14" value="Confiante" />Confiante</label></td>
-                <td><label><input type="radio" name="testL14" value="Estável" />Estável</label></td>
-                <td><label><input type="radio" name="testL14" value=" />Evasivo" />Evasivo</label></td>
-            </tr>
-            <tr>
-                <td><label><input type="radio" name="testL15" value="Controlador" required={true} />Controlador</label></td>
-                <td><label><input type="radio" name="testL15" value="Convincente" />Convincente</label></td>
-                <td><label><input type="radio" name="testL15" value="Versátil" />Versátil</label></td>
-                <td><label><input type="radio" name="testL15" value=" />Centrado" />Centrado</label></td>
-            </tr>
+            {options.map((row,rowIdx) => (
+                <tr>
+                  {row.values.map((el, idx) => (
+                    <td><label><input type="radio" name={`testL${rowIdx}`} value={el} row={rowIdx} idx={idx} required={true}/>{el}</label></td>
+                    )
+                )}
+                </tr>
+            ))}
           </tbody>
       </table>
       <div className='button-container'>
