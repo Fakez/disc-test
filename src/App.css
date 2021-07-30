@@ -25,6 +25,14 @@ h2 {
     font-size: 1rem;
 }
 
+.name-input {
+    margin: 1.5em 0;
+}
+
+.name-input input {
+    display: block;
+    min-width: 50%;
+}
 
 .table-container {
     width: fit-content;
