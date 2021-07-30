@@ -44,6 +44,8 @@ const DiscForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setButtonText('ENVIANDO...');
+    setButtonDisabled(true);
     const payload = {
       personFirstName: personFirstName,
       personLastName: personLastName,
@@ -60,7 +62,9 @@ const DiscForm = () => {
     });
     if (res.status === 200) {
       setButtonText('ENVIADO');
-      setButtonDisabled(true);
+    } else {
+      setButtonText('ERRO, ENVIAR NOVAMENTE');
+      setButtonDisabled(false);
     }
   }
 
@@ -132,7 +136,7 @@ const DiscForm = () => {
       </table>
       <div className='button-container'>
         <button type='submit' disabled={buttonDisabled}
-        style={buttonDisabled ? {opacity: '.5',cursor: 'not-allowed'} : null}>{buttonText}</button>
+        style={buttonDisabled ? {opacity: '.75',cursor: 'not-allowed'} : null}>{buttonText}</button>
       </div>
     </form>
     </div>
